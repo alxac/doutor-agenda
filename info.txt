@@ -7,3 +7,7 @@ npx drizzle-kit studio
 
 npx shadcn@2.5.0 add button tabs card input label form
 npm i zod@3.24.4
+
+npm i better-auth@1.2.7
+npm i dotenv@16.5.0
+npx @better-auth/cli@1.2.7 generate
