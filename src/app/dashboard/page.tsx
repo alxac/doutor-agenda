@@ -11,6 +11,7 @@ const Dashboard = async () => {
     const session = await auth.api.getSession({
         headers: await headers(),
     });
+    console.log(session?.user);
     if (!session?.user) {
         redirect("/authentication");
     }
@@ -25,6 +26,7 @@ const Dashboard = async () => {
             <h1>Dashboard</h1>
             <h1>{session?.user?.name}</h1>
             <h1>{session?.user?.email}</h1>
+            <h1>{session?.user?.image}</h1>
             <SignOutButton />
         </div>
     );
