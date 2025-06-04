@@ -5,8 +5,9 @@ npx drizzle-kit push
 npx drizzle-kit studio
 
 
-npx shadcn@2.5.0 add button tabs card input label form sonner dialog sidebar dropdown-menu avatar
+npx shadcn@2.5.0 add button tabs card input label form sonner dialog sidebar dropdown-menu avatar select
 npm i zod@3.24.4
+npx react-number-format@5.4.4
 
 npm i better-auth@1.2.7
 npm i dotenv@16.5.0
