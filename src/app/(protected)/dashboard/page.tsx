@@ -11,14 +11,12 @@ const Dashboard = async () => {
     const session = await auth.api.getSession({
         headers: await headers(),
     });
-    console.log(session?.user);
+
     if (!session?.user) {
         redirect("/authentication");
     }
-    const clinics = await db.query.usersToClinicsTable.findMany({
-        where: eq(usersToClinicsTable.userId, session.user.id),
-    });
-    if (clinics.length === 0) {
+
+    if (!session.user.clinic) {
         redirect("/clinic-form");
     }
     return (
