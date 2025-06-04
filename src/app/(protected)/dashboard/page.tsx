@@ -3,9 +3,6 @@ import { redirect } from "next/navigation";
 
 import { auth } from "@/lib/auth";
 import SignOutButton from "./_components/sign-out-button";
-import { db } from "@/db";
-import { eq } from "drizzle-orm";
-import { usersToClinicsTable } from "@/db/schema";
 
 const Dashboard = async () => {
     const session = await auth.api.getSession({

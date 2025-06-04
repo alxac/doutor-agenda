@@ -7,6 +7,11 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { medicalSpecialties } from "../_constants";
 import { NumericFormat } from "react-number-format";
+import { Button } from "@/components/ui/button";
+import { useAction } from "next-safe-action/hooks";
+import { upsertDoctor } from "@/actions/upsert-doctor";
+import { toast } from "sonner";
+import { doctorsTable } from "@/db/schema";
 
 const formSchema = z
     .object({
@@ -39,7 +44,12 @@ const formSchema = z
         },
     );
 
-const UpsertDoctorForm = () => {
+interface UpsertDoctorFormProps {
+    doctor?: typeof doctorsTable.$inferSelect;
+    onSuccess?: () => void;
+}
+
+const UpsertDoctorForm = ({ doctor, onSuccess }: UpsertDoctorFormProps) => {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -53,8 +63,25 @@ const UpsertDoctorForm = () => {
         },
     });
 
+    const upsertDoctorAction = useAction(upsertDoctor, {
+        onSuccess: () => {
+            toast.success("Médico adicionado com sucesso.");
+            onSuccess?.();
+        },
+        onError: () => {
+            toast.error("Erro ao adicionar médico.");
+        },
+    });
+
+
     const onSubmit = (data: z.infer<typeof formSchema>) => {
         console.log(data);
+        upsertDoctorAction.execute({
+            ...data,
+            availableFromWeekDay: parseInt(data.availableFromWeekDay),
+            availableToWeekDay: parseInt(data.availableToWeekDay),
+            appointmentPriceInCents: data.appointmentPrice * 100,
+        });
     };
 
     return (
@@ -340,6 +367,13 @@ const UpsertDoctorForm = () => {
                             </FormItem>
                         )}
                     />
+                    <DialogFooter>
+                        <Button type="submit" disabled={upsertDoctorAction.isPending}>
+                            {upsertDoctorAction.isPending
+                                ? "Salvando..."
+                                : "Salvar"}
+                        </Button>
+                    </DialogFooter>
                 </form>
             </Form>
 
